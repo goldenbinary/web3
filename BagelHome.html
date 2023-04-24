@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>BagelChamp Voting</title>
+  </head>
+  <body>
+    <h1>BagelChamp Voting</h1>
+    <p>Choose two proposals to vote for:</p>
+    <form>
+      <select name="proposal1">
+        <option value="0">Proposal 1</option>
+        <option value="1">Proposal 2</option>
+        <option value="2">Proposal 3</option>
+        <option value="3">Proposal 4</option>
+      </select>
+      <select name="proposal2">
+        <option value="0">Proposal 1</option>
+        <option value="1">Proposal 2</option>
+        <option value="2">Proposal 3</option>
+        <option value="3">Proposal 4</option>
+      </select>
+      <input type="submit" value="Submit Vote">
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/ethereum-detect-provider/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script>
+      // Connect to the contract using Web3.js and MetaMask
+      const provider = await detectEthereumProvider();
+      const web3 = new Web3(provider);
+      const contractAddress = "<contract address here>";
+      const contractAbi = <contract abi here>;
+      const contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+      // Request access to the user's MetaMask account
+      await ethereum.request({ method: "eth_requestAccounts" });
+      const accounts = await web3.eth.getAccounts();
+      const currentUser = accounts[0];
+
+      // Handle form submission
+      document.querySelector("form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const proposal1 = formData.get("proposal1");
+        const proposal2 = formData.get("proposal2");
+        await contract.methods.vote(proposal1, proposal2).send({ from: currentUser });
+        alert("Vote submitted!");
+      });
+    </script>
+  </body>
+</html>
