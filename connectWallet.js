@@ -6,10 +6,14 @@ const contractAbi = <contract abi here>;
 const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
 // Request access to the user's MetaMask account
-await ethereum.request({ method: "eth_requestAccounts" });
-const accounts = await web3.eth.getAccounts();
-const currentUser = accounts[0];
-
-// Call a function on the contract
-const winningProposal = await contract.methods.winningProposal().call({ from: currentUser });
-console.log("The winning proposal is: " + winningProposal);
+document.getElementById("connect-button").addEventListener("click", async () => {
+  try {
+    await ethereum.request({ method: "eth_requestAccounts" });
+    const accounts = await web3.eth.getAccounts();
+    const currentUser = accounts[0];
+    document.getElementById("status").innerText = "Connected: " + currentUser;
+  } catch (err) {
+    console.error(err);
+    document.getElementById("status").innerText = "Connection failed";
+  }
+});
