@@ -1,51 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
+<head>
     <title>BagelChamp Voting</title>
-  </head>
-  <body>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.4.0/dist/web3.min.js"></script>
+</head>
+<body>
     <h1>BagelChamp Voting</h1>
-    <p>Choose two bagels to vote for:</p>
-    <form>
-      <select name="proposal1">
-        <option value="0">Plain</option>
-        <option value="1">Cinnamon Raisin</option>
-        <option value="2">Jalipeno Anchovy</option>
-        <option value="3">Everything</option>
-      </select>
-      <select name="proposal2">
-        <option value="0">Plain</option>
-        <option value="1">Cinnamon Raisin</option>
-        <option value="2">Jalipeno Anchovy</option>
-        <option value="3">Everything</option>
-      </select>
-      <input type="submit" value="Submit Vote">
-    </form>
-    <script src="https://cdn.jsdelivr.net/npm/ethereum-detect-provider/dist/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
-    <script>
-      // Connect to the contract using Web3.js and MetaMask
-      const provider = await detectEthereumProvider();
-      const web3 = new Web3(provider);
-      const contractAddress = "<contract address here>";
-      const contractAbi = <contract abi here>;
-      const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
-      // Request access to the user's MetaMask account
-      await ethereum.request({ method: "eth_requestAccounts" });
-      const accounts = await web3.eth.getAccounts();
-      const currentUser = accounts[0];
+    <div id="connect-wallet">
+        <h2>Connect Your Wallet</h2>
+        <button id="connect-button">Connect</button>
+        <p id="status">Not Connected</p>
+    </div>
 
-      // Handle form submission
-      document.querySelector("form").addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const proposal1 = formData.get("proposal1");
-        const proposal2 = formData.get("proposal2");
-        await contract.methods.vote(proposal1, proposal2).send({ from: currentUser });
-        alert("Vote submitted!");
-      });
-    </script>
-  </body>
+    <div id="voting">
+        <h2>Vote for BagelChamp</h2>
+        <form>
+            <label>First choice:</label>
+            <select id="proposal1">
+                <option value="0">Plain</option>
+                <option value="1">Everything</option>
+                <option value="2">Cinnamon Raisin</option>
+                <option value="3">Jalepeno Anchovy</option>
+            </select><br>
+
+            <label>Second choice:</label>
+            <select id="proposal2">
+                <option value="0">Plain</option>
+                <option value="1">Everything</option>
+                <option value="2">Cinnamon Raisin</option>
+                <option value="3">Jalepeno Anchovy</option>
+            </select><br>
+
+            <button type="submit">Vote</button>
+        </form>
+
+        <p id="voting-status"></p>
+    </div>
+
+    <script src="connectWallet.js"></script>
+    <script src="vote.js"></script>
+</body>
 </html>
